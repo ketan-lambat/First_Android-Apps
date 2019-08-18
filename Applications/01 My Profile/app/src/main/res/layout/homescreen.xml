@@ -59,6 +59,7 @@
         <Button android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Education"
+                android:id="@+id/education"
                 android:textColor="#FFFFFF"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"/>
@@ -67,6 +68,7 @@
         <Button android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Work Experience"
+                android:id="@+id/workExperience"
                 android:textColor="#FFFFFF"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"/>
