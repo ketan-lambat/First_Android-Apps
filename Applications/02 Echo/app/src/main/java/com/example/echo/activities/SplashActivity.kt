@@ -1,4 +1,4 @@
-package com.example.echo
+package com.example.echo.activities
 
 import android.Manifest
 import android.content.Context
@@ -9,8 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import java.security.AccessControlContext
-import java.security.Permission
+import com.example.echo.R
 
 class SplashActivity : AppCompatActivity() {
 
