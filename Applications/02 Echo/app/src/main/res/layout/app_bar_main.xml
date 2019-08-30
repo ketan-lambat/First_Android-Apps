@@ -28,7 +28,7 @@
         <fragment
                 android:layout_below="@id/appBarLayout"
                 android:layout_width="match_parent"
-                class = "com.example.echo.fragments.MainScreenFragements"
+                class = "com.example.echo.fragments.MainScreenFragment"
                 android:layout_height="match_parent"
                 android:id="@+id/details_fragment"/>
     </RelativeLayout>

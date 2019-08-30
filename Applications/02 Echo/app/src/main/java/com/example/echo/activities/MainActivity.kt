@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.RecyclerView
 import com.example.echo.R
 import com.example.echo.fragments.MainScreenFragment
 
@@ -23,13 +24,15 @@ class MainActivity : AppCompatActivity() {
             drawerLayout, toolbar,
             R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
-        drawerLayout?.setDrawerListener(toggle)
+        drawerLayout?.addDrawerListener(toggle)
         toggle.syncState()
         val mainScreenFragment = MainScreenFragment()
         this.supportFragmentManager
             .beginTransaction()
-            .add(R.id.details_fragment, mainScreenFragment, "MainScceenFragment")
+            .add(R.id.details_fragment, mainScreenFragment, "MainScreenFragment")
             .commit()
+
+        var navigation_recycler_view = findViewById<RecyclerView>()
     }
 
     override fun onStart() {
