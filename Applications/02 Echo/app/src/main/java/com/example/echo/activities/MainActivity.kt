@@ -13,6 +13,8 @@ import com.example.echo.fragments.MainScreenFragment
 
 class MainActivity : AppCompatActivity() {
 
+    var naviDrawerIconsList: ArrayList<String> = arrayListOf()
+
     var drawerLayout: DrawerLayout?=null
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -22,6 +24,12 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         drawerLayout = findViewById(R.id.drawer_layout)
+
+        naviDrawerIconsList.add("All Songs")
+        naviDrawerIconsList.add("Favourites")
+        naviDrawerIconsList.add("Settings")
+        naviDrawerIconsList.add("About Us")
+
         val toggle = ActionBarDrawerToggle(this@MainActivity,
             drawerLayout, toolbar,
             R.string.navigation_drawer_open, R.string.navigation_drawer_close
