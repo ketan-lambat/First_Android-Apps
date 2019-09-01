@@ -35,13 +35,14 @@ class NavigationDrawerAdapter(_contentList: ArrayList<String>, _getImages: IntAr
     }
 
     override fun getItemCount(): Int {
-
+        return (contentList as ArrayList).size
     }
 
     override fun onBindViewHolder(holder: NavigationDrawerAdapter.NavViewHolder, position: Int) {
         holder?.icon_GET?.setBackgroundResource(getImages?.get(position) as Int)
         holder?.text_GET?.setText(contentList?.get(position))
         holder?.contentHolder?.setOnClickListener{
+
             if (position==0)
             {
                 val mainScreenFragment = MainScreenFragment()
@@ -74,6 +75,7 @@ class NavigationDrawerAdapter(_contentList: ArrayList<String>, _getImages: IntAr
                     .replace(R.id.details_fragment, aboutUsFragment)
                     .commit()
             }
+            MainActivity.Statified.drawerLayout?.closeDrawers()
         }
     }
 
