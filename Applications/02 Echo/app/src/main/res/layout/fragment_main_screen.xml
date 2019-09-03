@@ -58,8 +58,8 @@
                     android:singleLine="true"
                     android:layout_marginTop="5dp"
                     android:text="..."
-                    android:layout_alignLeft="@id/nowPlaying"
-                    android:layout_alignStart="@id/nowPlaying"
+                    android:layout_alignLeft="@+id/nowPlaying"
+                    android:layout_alignStart="@+id/nowPlaying"
                     android:textColor="#ffffff"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     />

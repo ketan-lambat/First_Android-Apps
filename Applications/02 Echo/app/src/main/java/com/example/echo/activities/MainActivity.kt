@@ -57,8 +57,11 @@ class MainActivity : AppCompatActivity() {
                                                     images_for_navdrawer,
                                                     this)
         _navigationAdapter.notifyDataSetChanged()
+        _navigationAdapter.notifyDataSetChanged()
 
         val navigation_recycler_view = findViewById<RecyclerView>(R.id.navigation_recycler_view)
+
+          //  LinearLayoutManager manager = new LinearLayoutManager(this)
 
         navigation_recycler_view.layoutManager= LinearLayoutManager  (this)
         navigation_recycler_view.itemAnimator = DefaultItemAnimator()
