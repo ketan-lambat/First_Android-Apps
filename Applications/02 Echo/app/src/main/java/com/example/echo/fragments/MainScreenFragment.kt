@@ -12,9 +12,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.echo.R
 import com.example.echo.Songs
+import com.example.echo.adapters.MainScreenAdapter
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,14 +31,16 @@ private const val ARG_PARAM2 = "param2"
  */
 class MainScreenFragment : Fragment() {
 
-    var nowPlayingBottomBar:RelativeLayout?=null
-    var playPauseButton: ImageButton?=null
-    var songTitle:TextView?=null
-    var visibleLayout:RelativeLayout?=null
-    var noSongs:RelativeLayout?=null
-    var recyclerView:RecyclerView?=null
-    var myActivity: Activity?=null
+    var getSongsList: ArrayList<Songs>? = null
+    var nowPlayingBottomBar:RelativeLayout? = null
+    var playPauseButton: ImageButton? = null
+    var songTitle:TextView? = null
+    var visibleLayout:RelativeLayout? = null
+    var noSongs:RelativeLayout? = null
+    var recyclerView:RecyclerView? = null
+    var myActivity: Activity? = null
 
+    var _mainScreenAdapter: MainScreenAdapter?=null
 
     override fun onCreateView(
         inflater: LayoutInflater?, container: ViewGroup?,
@@ -43,14 +48,24 @@ class MainScreenFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_main_screen, container, false)
 
-        visibleLayout = view?.findViewById<RelativeLayout>(R.id.visibleLayout)
-        noSongs = view?.findViewById<RelativeLayout>(R.id.noSongs)
-        nowPlayingBottomBar = view?.findViewById<RelativeLayout>(R.id.hiddenBarMainScreen)
-        songTitle = view?.findViewById<TextView>(R.id.songTitleMainScreen)
-        playPauseButton = view?.findViewById<ImageButton>(R.id.playPauseButton)
-        recyclerView = view?.findViewById<RecyclerView>(R.id.contentMain)
+        visibleLayout = view?.findViewById(R.id.visibleLayout)
+        noSongs = view?.findViewById(R.id.noSongs)
+        nowPlayingBottomBar = view?.findViewById(R.id.hiddenBarMainScreen)
+        songTitle = view?.findViewById(R.id.songTitleMainScreen)
+        playPauseButton = view?.findViewById(R.id.playPauseButton)
+        recyclerView = view?.findViewById(R.id.contentMain)
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        getSongsList = getSongsFromPhone()
+        _mainScreenAdapter = MainScreenAdapter(getSongsList as ArrayList<Songs>, myActivity as Context)
+        val mLayoutManager = LinearLayoutManager(myActivity)
+        recyclerView?.layoutManager = mLayoutManager
+        recyclerView?.itemAnimator = DefaultItemAnimator()
+        recyclerView?.adapter = _mainScreenAdapter
     }
 
     override fun onAttach(context: Context?) {
@@ -65,9 +80,11 @@ class MainScreenFragment : Fragment() {
 
     fun getSongsFromPhone():ArrayList<Songs>{
         var arrayList = ArrayList<Songs>()
+
         var contentResolver = myActivity?.contentResolver
         var songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         var songCursor = contentResolver?.query(songUri, null, null, null, null)
+
         if (songCursor!=null && songCursor.moveToFirst()){
             val songId = songCursor.getColumnIndex(MediaStore.Audio.Media._ID)
             val songTitle = songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
@@ -83,11 +100,8 @@ class MainScreenFragment : Fragment() {
                 var currentDate = songCursor.getLong(dateIndex)
 
                 arrayList.add(Songs(currentId, currentTitle, currentArtist, currentData, currentDate))
-
-        }
+            }
         }
         return arrayList
     }
-
-
 }
