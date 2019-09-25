@@ -42,6 +42,7 @@ import kotlinx.android.synthetic.main.row_custom_mainscreen_adapter.view.*
             args.putInt("songPosition", position)
 
             args.putParcelableArrayList("songData", songDetails)
+            songPlayingFragment.arguments=args
 
             (mContext as FragmentActivity).supportFragmentManager
                 .beginTransaction()

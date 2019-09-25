@@ -35,7 +35,7 @@ class NavigationDrawerAdapter(_contentList: ArrayList<String>, _getImages: IntAr
     }
 
     override fun getItemCount(): Int {
-        return (contentList as ArrayList).size
+        return contentList?.size as Int
     }
 
     override fun onBindViewHolder(holder: NavigationDrawerAdapter.NavViewHolder, position: Int) {
