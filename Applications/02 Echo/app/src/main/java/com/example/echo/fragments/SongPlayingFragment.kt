@@ -64,6 +64,10 @@ class SongPlayingFragment : Fragment() {
     var currentSongHelper: CurrentSongHelper?=null
     var audioVisualization: AudioVisualization?=null
     var glView : GLAudioVisualizationView?=null
+    object Staticated{
+        var MY_PREFS_SHUFFLE = "Shuffle feature"
+        var MY_PREFS_LOOP = "Loop feature"
+    }
 
     var updateSongTime = object: Runnable{
         override fun run() {
@@ -185,18 +189,50 @@ class SongPlayingFragment : Fragment() {
         var visualizationHandler = DbmHandler.Factory.newVisualizerHandler(myActivity as Context, 0)
         audioVisualization?.linkTo(visualizationHandler)
 
+        var prefsForShuffle = myActivity?.getSharedPreferences(Staticated.MY_PREFS_SHUFFLE, Context.MODE_PRIVATE)
+        var isShuffleAllowed = prefsForShuffle?.getBoolean("feature", false)
+        if (isShuffleAllowed as Boolean){
+            currentSongHelper?.isShuffle = true
+            currentSongHelper?.isLoop = false
+            shuffleImageButton?.setBackgroundResource(R.drawable.shuffle_icon)
+            loopImageButton?.setBackgroundResource(R.drawable.loop_white_icon)
+        }else{
+            currentSongHelper?.isShuffle = false
+            shuffleImageButton?.setBackgroundResource(R.drawable.shuffle_white_icon)
+        }
+
+        var prefsForLoop = myActivity?.getSharedPreferences(Staticated.MY_PREFS_SHUFFLE, Context.MODE_PRIVATE)
+        var isLoopAllowed = prefsForLoop?.getBoolean("feature", false)
+        if (isLoopAllowed as Boolean){
+            currentSongHelper?.isShuffle = true
+            currentSongHelper?.isLoop = true
+            shuffleImageButton?.setBackgroundResource(R.drawable.shuffle_white_icon)
+            loopImageButton?.setBackgroundResource(R.drawable.loop_icon)
+        }else{
+            loopImageButton?.setBackgroundResource(R.drawable.loop_white_icon)
+            currentSongHelper?.isLoop = false
+        }
+
     }
 
     fun clickHandler(){
         shuffleImageButton?.setOnClickListener {
+            var editorShuffle =  myActivity?.getSharedPreferences(Staticated.MY_PREFS_SHUFFLE, Context.MODE_PRIVATE)?.edit()
+            var editorLoop =  myActivity?.getSharedPreferences(Staticated.MY_PREFS_LOOP, Context.MODE_PRIVATE)?.edit()
             if (currentSongHelper?.isShuffle as Boolean){
                 shuffleImageButton?.setBackgroundResource(R.drawable.shuffle_white_icon)
                 currentSongHelper?.isShuffle = false
+                editorShuffle?.putBoolean("feature", false)
+                editorShuffle?.apply()
             } else{
                 currentSongHelper?.isShuffle = true
                 currentSongHelper?.isLoop = false
                 shuffleImageButton?.setBackgroundResource(R.drawable.shuffle_icon)
                 loopImageButton?.setBackgroundResource(R.drawable.loop_white_icon)
+                editorShuffle?.putBoolean("feature", true)
+                editorShuffle?.apply()
+                editorLoop?.putBoolean("feature", false)
+                editorLoop?.apply()
             }
         }
 
