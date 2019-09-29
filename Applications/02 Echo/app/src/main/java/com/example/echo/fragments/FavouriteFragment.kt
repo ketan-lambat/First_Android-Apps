@@ -3,6 +3,7 @@ package com.example.echo.fragments
 
 import android.app.Activity
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -13,13 +14,16 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.echo.Databases.EchoDatabase
 import com.example.echo.R
 import com.example.echo.Songs
 import com.example.echo.adapters.FavouriteAdapter
 import kotlinx.android.synthetic.main.fragment_favourite.*
+import java.lang.Exception
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,6 +45,12 @@ class FavouriteFragment : Fragment() {
     var playPauseButton:ImageButton?=null
     var songTitle:TextView?=null
     var recyclerView:RecyclerView?=null
+    var trackPosition: Int = 0
+    var favouriteContent: EchoDatabase?=null
+
+    object Statified{
+        var mediaPlayer: MediaPlayer?=null
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -123,4 +133,59 @@ class FavouriteFragment : Fragment() {
         return arrayList
     }
 
+    fun bottomBarSetup(){
+        try {
+            bottomBarClickHandler()
+            songTitle?.setText(SongPlayingFragment.Statified.currentSongHelper?.songTitle)
+            SongPlayingFragment.Statified.mediaPlayer?.setOnCompletionListener {
+                songTitle?.setText(SongPlayingFragment.Statified.currentSongHelper?.songTitle)
+                SongPlayingFragment.Staticated.onSongComplete()
+            }
+            if (SongPlayingFragment.Statified.mediaPlayer?.isPlaying as Boolean){
+                nowPLayingBottomBAr?.visibility = View.VISIBLE
+            }else{
+                nowPLayingBottomBAr?.visibility = View.INVISIBLE
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    fun bottomBarClickHandler(){
+        nowPLayingBottomBAr?.setOnClickListener{
+            Statified.mediaPlayer = SongPlayingFragment.Statified.mediaPlayer
+            val songPlayingFragment = SongPlayingFragment()
+            val args = Bundle()
+            args.putString("songArtist", SongPlayingFragment.Statified.currentSongHelper?.songArtist)
+            args.putString("path", SongPlayingFragment.Statified.currentSongHelper?.songPath)
+            args.putString("songTitle", SongPlayingFragment.Statified.currentSongHelper?.songTitle)
+            args.putInt("songId", SongPlayingFragment.Statified.currentSongHelper?.songId?.toInt() as Int)
+            args.putInt("songPosition", SongPlayingFragment.Statified.currentSongHelper?.currentPosition?.toInt() as Int)
+            args.putParcelableArrayList("songData", SongPlayingFragment.Statified.fetchSongs)
+            args.putString("FavBottomBar", "success")
+
+            songPlayingFragment.arguments = args
+
+            fragmentManager?.beginTransaction()
+                .replace(R.id.details_fragment, songPlayingFragment)
+                .addToBackStack("SongPlayingFragment")
+                .commit()
+        }
+        playPauseButton?.setOnClickListener {
+            if (SongPlayingFragment.Statified.mediaPlayer?.isPlaying as Boolean){
+                SongPlayingFragment.Statified.mediaPlayer?.pause()
+                trackPosition = SongPlayingFragment.Statified.mediaPlayer?.getCurrentPosition() as Int
+                playPauseButton?.setBackgroundResource(R.drawable.play_icon)
+            }else{
+                SongPlayingFragment.Statified.mediaPlayer?.seekTo(trackPosition)
+                SongPlayingFragment.Statified.mediaPlayer?.start()
+                playPauseButton?.setBackgroundResource(R.drawable.pause_icon)
+            }
+        }
+    }
+    fun display_favourites_by_searching(){
+        if (favouriteContent?.checkSize() as Int > 0){
+
+        }
+    }
 }
