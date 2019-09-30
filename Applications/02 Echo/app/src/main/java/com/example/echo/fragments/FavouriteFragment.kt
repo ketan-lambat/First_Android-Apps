@@ -38,7 +38,7 @@ private const val ARG_PARAM2 = "param2"
 class FavouriteFragment : Fragment() {
     var myActivity: Activity?=null
 
-    var getSongsList: ArrayList<Songs>?=null
+   // var getSongsList: ArrayList<Songs>?=null
 
     var noFavourites:TextView?=null
     var nowPLayingBottomBAr:RelativeLayout?=null
@@ -47,6 +47,9 @@ class FavouriteFragment : Fragment() {
     var recyclerView:RecyclerView?=null
     var trackPosition: Int = 0
     var favouriteContent: EchoDatabase?=null
+
+    var refreshList: ArrayList<Songs>? =null
+    var getListFromDatabase: ArrayList<Songs>?=null
 
     object Statified{
         var mediaPlayer: MediaPlayer?=null
@@ -84,8 +87,11 @@ class FavouriteFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        getSongsList = getSongsFromPhone()
-        if (getSongsList == null){
+        favouriteContent = EchoDatabase(myActivity)
+        display_favourites_by_searching()
+        bottomBarSetup()
+       // getSongsList = getSongsFromPhone()
+        /*if (getSongsList == null){
             recyclerView?.visibility = View.INVISIBLE
             noFavourites?.visibility = View.VISIBLE
         }else{
@@ -95,7 +101,7 @@ class FavouriteFragment : Fragment() {
             recyclerView?.itemAnimator = DefaultItemAnimator()
             recyclerView?.adapter = favouriteAdapter
             recyclerView?.setHasFixedSize(true)
-        }
+        }*/
     }
 
     override fun onResume() {
@@ -166,10 +172,8 @@ class FavouriteFragment : Fragment() {
 
             songPlayingFragment.arguments = args
 
-            fragmentManager?.beginTransaction()
-                .replace(R.id.details_fragment, songPlayingFragment)
-                .addToBackStack("SongPlayingFragment")
-                .commit()
+            fragmentManager?.beginTransaction()?.replace(R.id.details_fragment, songPlayingFragment)?.addToBackStack("SongPlayingFragment")
+                ?.commit()
         }
         playPauseButton?.setOnClickListener {
             if (SongPlayingFragment.Statified.mediaPlayer?.isPlaying as Boolean){
@@ -185,7 +189,36 @@ class FavouriteFragment : Fragment() {
     }
     fun display_favourites_by_searching(){
         if (favouriteContent?.checkSize() as Int > 0){
+            refreshList = ArrayList<Songs>()
+            getListFromDatabase = favouriteContent?.queryDBList()
+            var fetchListfromDevice = getSongsFromPhone()
+            if (fetchListfromDevice != null){
+                for (i in 0..fetchListfromDevice?.size-1){
+                    for (j in 0..getListFromDatabase?.size as Int-1){
+                        if ((getListFromDatabase?.get(j)?.songID === (fetchListfromDevice?.get(i)?.songID))){
+                            refreshList?.add((getListFromDatabase as ArrayList<Songs>)[j])
+                        }
+                    }
+                }
+            }else{
 
+            }
+
+            if(refreshList==null){
+                recyclerView?.visibility = View.INVISIBLE
+                noFavourites?.visibility = View.VISIBLE
+            }else{
+                var favouriteAdapter = FavouriteAdapter(refreshList as ArrayList<Songs>, myActivity as Context)
+                var mLayoutManager = LinearLayoutManager(activity)
+                recyclerView?.layoutManager = mLayoutManager
+                recyclerView?.itemAnimator = DefaultItemAnimator()
+                recyclerView?.adapter = favouriteAdapter
+                recyclerView?.setHasFixedSize(true)
+            }
+        }else{
+            recyclerView?.visibility = View.INVISIBLE
+            noFavourites?.visibility = View.VISIBLE
         }
+
     }
 }
