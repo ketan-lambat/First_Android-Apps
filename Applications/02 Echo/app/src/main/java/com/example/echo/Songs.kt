@@ -25,5 +25,4 @@ class Songs (var songID: Long, var songTitle: String,
             songTwo.compareTo(songOne)
         }
     }
-
 }

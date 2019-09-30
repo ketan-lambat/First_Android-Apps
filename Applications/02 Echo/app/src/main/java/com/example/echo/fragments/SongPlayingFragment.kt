@@ -50,6 +50,7 @@ import com.example.echo.fragments.SongPlayingFragment.Statified.shuffleImageButt
 import com.example.echo.fragments.SongPlayingFragment.Statified.songArtistView
 import com.example.echo.fragments.SongPlayingFragment.Statified.songTitleView
 import com.example.echo.fragments.SongPlayingFragment.Statified.startTimeText
+import com.google.android.material.circularreveal.CircularRevealHelper
 import kotlinx.android.synthetic.main.fragment_song_playing.*
 import org.w3c.dom.Text
 import java.lang.Exception
@@ -516,6 +517,7 @@ class SongPlayingFragment : Fragment() {
 
         nextImageButton?.setOnClickListener {
             currentSongHelper?.isPlaying = true
+            Statified.playPauseImageButton?.setBackgroundResource(R.drawable.pause_icon)
             if (currentSongHelper?.isShuffle as Boolean){
                 playNext("PlayNextLikeNormalShuffle")
             }else{

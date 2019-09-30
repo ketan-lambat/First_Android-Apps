@@ -43,6 +43,7 @@ class FavouriteAdapter(_songDetails: ArrayList<Songs>, _context: Context) :
             (mContext as FragmentActivity).supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.details_fragment, songPlayingFragment)
+                .addToBackStack("SongPlayingFragmentFavourite")
                 .commit()
         }
     }

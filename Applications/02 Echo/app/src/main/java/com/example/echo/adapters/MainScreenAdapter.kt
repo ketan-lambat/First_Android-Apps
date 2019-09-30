@@ -47,6 +47,7 @@ import kotlinx.android.synthetic.main.row_custom_mainscreen_adapter.view.*
             (mContext as FragmentActivity).supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.details_fragment, songPlayingFragment)
+                .addToBackStack("SongPlayingFragment")
                 .commit()
         }
     }
