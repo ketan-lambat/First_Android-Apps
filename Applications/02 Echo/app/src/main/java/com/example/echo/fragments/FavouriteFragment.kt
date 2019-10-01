@@ -58,6 +58,7 @@ class FavouriteFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater!!.inflate(R.layout.fragment_favourite, container, false)
+        activity?.title = "Favourites"
         noFavourites = view?.findViewById(R.id.noFavourites)
         nowPLayingBottomBAr = view.findViewById(R.id.hiddenBarFavScreen)
         songTitle = view.findViewById(R.id.songTitleFavScreen)
@@ -110,6 +111,8 @@ class FavouriteFragment : Fragment() {
 
     override fun onPrepareOptionsMenu(menu: Menu?) {
         super.onPrepareOptionsMenu(menu)
+        val item = menu?.findItem(R.id.action_sort)
+        item?.isVisible = false
     }
 
     fun getSongsFromPhone():ArrayList<Songs>{
