@@ -12,13 +12,15 @@ import androidx.core.app.ActivityCompat
 import com.example.echo.R
 
 class SplashActivity : AppCompatActivity() {
+    object Staticated{
+        var SPLASH_TIME_OUT = 1000
+    }
 
     var permissionsString = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MODIFY_AUDIO_SETTINGS,
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.PROCESS_OUTGOING_CALLS,
-        Manifest.permission.RECORD_AUDIO
-        )
+        Manifest.permission.RECORD_AUDIO)
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -36,7 +38,7 @@ class SplashActivity : AppCompatActivity() {
                 val startAct = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(startAct)
                 this.finish()
-            }, 1000)
+            }, SplashActivity.Staticated.SPLASH_TIME_OUT.toLong())
         }
     }
 
@@ -55,31 +57,29 @@ class SplashActivity : AppCompatActivity() {
                         val startAct = Intent(this@SplashActivity, MainActivity::class.java)
                         startActivity(startAct)
                         this.finish()
-                    }, 1000)
+                    }, SplashActivity.Staticated.SPLASH_TIME_OUT.toLong())
                 }
                 else
                 {
                     Toast.makeText(this@SplashActivity, "Please grant all the permissions to continue", Toast.LENGTH_SHORT).show()
                     this.finish()
                 }
-
                 return
             }
             else->{
                 Toast.makeText(this@SplashActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
                 this.finish()
-
                 return
             }
         }
     }
 
-    fun hasPermissions(context: Context, vararg permissions: String): Boolean
+    private fun hasPermissions(context: Context, vararg permissions: String): Boolean
     {
         var hasAllPermissions = true
         for (permission in permissions)
         {
-            var res = context.checkCallingOrSelfPermission(permission)
+            val res = context.checkCallingOrSelfPermission(permission)
             if (res!=PackageManager.PERMISSION_GRANTED) {
                 hasAllPermissions = false
             }

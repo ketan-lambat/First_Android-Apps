@@ -9,5 +9,5 @@ class CurrentSongHelper{
     var isPlaying: Boolean = false
     var isLoop: Boolean = false
     var isShuffle: Boolean = false
-    var trackPosition: Int = 0
+    var TrackPosition: Int = 0
 }
