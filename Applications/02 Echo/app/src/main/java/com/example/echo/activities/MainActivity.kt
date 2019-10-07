@@ -23,24 +23,22 @@ import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
-    object Statified{
+    var navigationDrawerIconsList: ArrayList<String> = arrayListOf()
+    var images_for_navdrawer = intArrayOf(R.drawable.navigation_allsongs,
+        R.drawable.navigation_favorites,
+        R.drawable.navigation_settings,
+        R.drawable.navigation_aboutus)
+    var trackNotificationBuilder: Notification?=null
+    object Staticated{
         var drawerLayout:DrawerLayout?=null
         var notificationManager:NotificationManager?=null
     }
-
-    var navigationDrawerIconsList: ArrayList<String> = arrayListOf()
-    var images_for_navdrawer = intArrayOf(R.drawable.navigation_allsongs,
-                            R.drawable.navigation_favorites,
-                            R.drawable.navigation_settings,
-                            R.drawable.navigation_aboutus)
-    var trackNotificationBuilder: Notification?=null
-
 
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
         MainActivity.Statified.drawerLayout = findViewById(R.id.drawer_layout)

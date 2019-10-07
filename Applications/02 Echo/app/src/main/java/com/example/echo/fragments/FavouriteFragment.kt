@@ -193,7 +193,7 @@ class FavouriteFragment : Fragment() {
     fun display_favourites_by_searching(){
         if (favouriteContent?.checkSize() as Int > 0){
             refreshList = ArrayList<Songs>()
-            getListFromDatabase = favouriteContent?.queryDBList()
+            getListFromDatabase = favouriteContent?.queryDBforList()
             var fetchListfromDevice = getSongsFromPhone()
             if (fetchListfromDevice != null){
                 for (i in 0..fetchListfromDevice?.size-1){

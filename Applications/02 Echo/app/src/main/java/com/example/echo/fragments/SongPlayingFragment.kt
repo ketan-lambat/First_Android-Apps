@@ -499,7 +499,7 @@ class SongPlayingFragment : Fragment() {
             }else{
                 fab?.setBackgroundResource(R.drawable.favorite_on)
                 //fab?.setImageDrawable(ContextCompat.getDrawable(myActivity!!, R.drawable.favorite_on))
-                favouriteContent?.storeAsFavourite(currentSongHelper?.songId?.toInt(), currentSongHelper?.songArtist, Statified.currentSongHelper?.songTitle, Statified.currentSongHelper?.songPath)
+                favouriteContent?.storeasFavourite(currentSongHelper?.songId?.toInt(), currentSongHelper?.songArtist, Statified.currentSongHelper?.songTitle, Statified.currentSongHelper?.songPath)
                 Toast.makeText(myActivity, "Added to Favourites", Toast.LENGTH_SHORT).show()
             }
         }
