@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.echo.R
 import com.example.echo.activities.MainActivity
+import com.example.echo.activities.MainActivity.Staticated.drawerLayout
 import com.example.echo.fragments.AboutUsFragment
 import com.example.echo.fragments.FavouriteFragment
 import com.example.echo.fragments.MainScreenFragment
@@ -75,7 +76,7 @@ class NavigationDrawerAdapter(_contentList: ArrayList<String>, _getImages: IntAr
                     .replace(R.id.details_fragment, aboutUsFragment)
                     .commit()
             }
-            MainActivity.Statified.drawerLayout?.closeDrawers()
+            drawerLayout?.closeDrawers()
         }
     }
 

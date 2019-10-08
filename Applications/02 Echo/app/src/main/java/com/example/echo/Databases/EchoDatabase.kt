@@ -2,13 +2,10 @@ package com.example.echo.Databases
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.LocusId
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.icu.text.CaseMap
 import com.example.echo.Songs
 import java.lang.Exception
-import java.security.cert.CertPath
 
 
 class EchoDatabase : SQLiteOpenHelper {
@@ -94,7 +91,7 @@ class EchoDatabase : SQLiteOpenHelper {
         return counter
     }
 
-    fun checkifIdExists(_id: Int): Boolean {
+    fun checkifIdExists(_id: Int?): Boolean {
         var storeId = -1090
         val db = this.readableDatabase
         val query_params = "SELECT * FROM " + EchoDatabase.Statified.TABLE_NAME + " WHERE SongId = '$_id'"

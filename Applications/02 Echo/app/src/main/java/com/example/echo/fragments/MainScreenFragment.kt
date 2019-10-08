@@ -3,6 +3,7 @@ package com.example.echo.fragments
 
 import android.app.Activity
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
@@ -41,6 +42,9 @@ class MainScreenFragment : Fragment() {
     var myActivity: Activity? = null
     var _mainScreenAdapter: MainScreenAdapter?=null
 
+    object Statified {
+        var mMediaPlayer: MediaPlayer? = null
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

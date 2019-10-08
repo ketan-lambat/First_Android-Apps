@@ -36,7 +36,7 @@ class SettingsFragment : Fragment() {
         // Inflate the layout for this fragment
         activity?.title = "Settings"
         val view =  inflater!!.inflate(R.layout.fragment_settings, container, false)
-        shakeSwitch = view?.findViewById(R.id.switchShake)
+        shakeSwitch = view?.findViewById(R.id.switchShake) as Switch
         return view
     }
 
@@ -57,7 +57,7 @@ class SettingsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val prefs = myActivity?.getSharedPreferences(Statified.MY_PREFS_NAME, Context.MODE_PRIVATE)
+        val prefs = myActivity?.getSharedPreferences(SettingsFragment.Statified.MY_PREFS_NAME, Context.MODE_PRIVATE)
         val isAllowed = prefs?.getBoolean("feature", false)
         if (isAllowed as Boolean){
             shakeSwitch?.isChecked = true
@@ -80,9 +80,12 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?) {
-        super.onPrepareOptionsMenu(menu)
         val item = menu?.findItem(R.id.action_sort)
-        item?.isVisible = false
+        if (item == null) {
+
+        } else {
+            item.isVisible = false
+        }
     }
 
 }
