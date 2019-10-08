@@ -49,6 +49,7 @@ import com.example.echo.fragments.SongPlayingFragment.Statified.seekBar
 import com.example.echo.fragments.SongPlayingFragment.Statified.shuffleImageButton
 import com.example.echo.fragments.SongPlayingFragment.Statified.songTitle
 import com.example.echo.fragments.SongPlayingFragment.Statified.startTimeText
+import com.example.echo.fragments.SongPlayingFragment.Statified.updateSongTime
 import kotlinx.android.synthetic.main.fragment_song_playing.*
 import java.io.IOException
 import java.lang.Exception
@@ -94,15 +95,11 @@ class SongPlayingFragment : Fragment() {
 
         var updateSongTime = object : Runnable {
             override fun run() {
-                val getCurrent = mediaPlayer?.currentPosition
-                startTimeText?.setText(String.format("%d:%d",
-                    getCurrent?.toLong()?.let { TimeUnit.MILLISECONDS.toMinutes(it) },
-                    getCurrent?.toLong()?.let { TimeUnit.MILLISECONDS.toMinutes(it) }?.let {
-                        TimeUnit.MILLISECONDS.toSeconds(
-                            it
-                        )
-                    }))
-                seekBar?.setProgress(getCurrent?.toInt() as Int)
+                val getCurrent = mediaPlayer?.getCurrentPosition()
+                startTimeText!!.text = String.format("%d:%d",
+                    TimeUnit.MILLISECONDS.toMinutes(getCurrent?.toLong()!!),
+                    TimeUnit.MILLISECONDS.toSeconds(getCurrent?.toLong()!!) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(getCurrent.toLong())))
+                seekBar?.setProgress(getCurrent.toInt())
                 Handler().postDelayed(this, 1000)
             }
         }
@@ -483,7 +480,7 @@ class SongPlayingFragment : Fragment() {
         fun processInformation(mediaPlayer: MediaPlayer) {
             val finalTime = mediaPlayer.duration
             val startTime = mediaPlayer.currentPosition
-            seekBar?.max = finalTime
+            seekBar?.setMax(finalTime)
 
             startTimeText?.setText(
                 String.format(
@@ -503,25 +500,11 @@ class SongPlayingFragment : Fragment() {
                     )
                 )
             )
-
             seekBar?.setProgress(startTime)
-            Handler().postDelayed(Statified.updateSongTime, 1000)
+            Handler().postDelayed(updateSongTime, 1000)
+
         }
     }
-    /*
-        fun updateTextView(songTitle: String, songArtist: String) {
-            var songTitleUpdated = songTitle
-            var songArtistUpdated = songArtist
-            if (songTitle.equals("<unknown>", true)) {
-                songTitleUpdated = "unknown"
-            }
-            if (songArtist.equals("<unknown>", true)) {
-                songArtistUpdated = "unknown"
-            }
-            songTitle?.setText(songTitleUpdated)
-            songArtist?.setText(songArtistUpdated)
-        }
-    */
 
     fun bindShakeListener() {
         mSensorListener = object : SensorEventListener {
